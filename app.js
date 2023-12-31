@@ -4,6 +4,11 @@ app.use(express.json());
 
 
 
+const userRoutes =require("./routes/user.routes");
+
+app.use(userRoutes);
+
+
 
 
 app.get("/",(req,res)=>{
