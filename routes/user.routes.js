@@ -1,12 +1,22 @@
-const express =require("express");
-const router =express.Router();
-const { registerUser, loginUser}=require("../controllers/user.controller");
+const express = require("express");
+const router = express.Router();
+const multer = require('multer');
+const { registerUser, loginUser } = require("../controllers/user.controller");
+const uploadController =require("../controllers/fileUpload")
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Adjust the destination folder as needed
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  });
+  const upload = multer({ storage: storage });
 
 
 router.post('/register', registerUser);
-
-// Login user
 router.post('/login', loginUser);
+router.post('/upload', upload.single('file'), uploadController);
 
 module.exports = router;
