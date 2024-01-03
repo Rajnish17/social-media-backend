@@ -1,3 +1,4 @@
+const fs = require('fs');
 const uploadToCloudinary = require('../utils/uploadFile');
 
 // Example Express controller
@@ -12,6 +13,9 @@ async function uploadController(req, res) {
 
     // Call the uploadToCloudinary function
     const cloudinaryResult = await uploadToCloudinary(file.path);
+
+    // Delete the local file after uploading to Cloudinary
+    fs.unlinkSync(file.path);
 
     // Optionally, you can do something with the Cloudinary result
     // For example, send a response back to the client
