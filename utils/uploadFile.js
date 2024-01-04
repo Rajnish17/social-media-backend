@@ -31,6 +31,9 @@ async function uploadToCloudinary(filePath) {
     });
 
     return result;
+
+    fs.unlinkSync(filePath);
+    console.log('local file deletd');
   } catch (error) {
     console.error('Error reading file or uploading to Cloudinary:', error);
     throw error;
