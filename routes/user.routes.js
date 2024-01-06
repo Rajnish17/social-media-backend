@@ -18,6 +18,6 @@ const storage = multer.diskStorage({
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/upload', upload.single('file'), uploadController);
-router.post('/delete/:id', deleteController);
+router.delete('/delete/:public_id', deleteController);
 
 module.exports = router;

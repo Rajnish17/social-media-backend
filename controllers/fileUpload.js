@@ -1,4 +1,5 @@
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
 const uploadToCloudinary = require('../utils/uploadFile');
 
 // Example Express controller
@@ -28,7 +29,7 @@ const uploadToCloudinary = require('../utils/uploadFile');
   try {
     // Get the public_id of the image to delete from the request parameters
     const { public_id } = req.params;
-
+       console.log(public_id);
     if (!public_id) {
       return res.status(400).json({ error: 'No public_id provided' });
     }
