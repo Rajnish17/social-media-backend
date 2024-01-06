@@ -2,9 +2,9 @@ const fs = require('fs');
 const uploadToCloudinary = require('../utils/uploadFile');
 
 // Example Express controller
-async function uploadController(req, res) {
+ const uploadController= async(req, res)=> {
   try {
-    // Assuming the file is sent as 'file' in a multipart/form-data request
+    // Get the file from the request
     const { file } = req;
 
     if (!file) {
@@ -17,8 +17,6 @@ async function uploadController(req, res) {
     // Delete the local file after uploading to Cloudinary
     fs.unlinkSync(file.path);
 
-    // Optionally, you can do something with the Cloudinary result
-    // For example, send a response back to the client
     res.json({ cloudinaryResult });
   } catch (error) {
     console.error('Error in uploadController:', error);
@@ -26,4 +24,31 @@ async function uploadController(req, res) {
   }
 }
 
-module.exports = uploadController;
+ const deleteController = async(req, res) =>{
+  try {
+    // Get the public_id of the image to delete from the request parameters
+    const { public_id } = req.params;
+
+    if (!public_id) {
+      return res.status(400).json({ error: 'No public_id provided' });
+    }
+
+    // Call the Cloudinary destroy method to delete the image
+    const cloudinaryResult = await cloudinary.uploader.destroy(public_id);
+
+    // Check if the image was successfully deleted
+    if (cloudinaryResult.result === 'ok') {
+      res.json({ message: 'Image deleted from Cloudinary' });
+    } else {
+      res.status(500).json({ error: 'Failed to delete image from Cloudinary' });
+    }
+  } catch (error) {
+    console.error('Error in deleteController:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+module.exports ={ 
+  uploadController,
+  deleteController
+};
